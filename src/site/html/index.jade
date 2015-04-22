@@ -1,0 +1,23 @@
+extends ../layouts/default.jade
+
+
+block main
+  div.module(data-module="first-module")
+    header
+      | First Module
+    .content
+      div.text Should have { data.text }
+        b(rv-text="data.text")
+      input(type='text' rv-value="data.text")
+      div
+        button(rv-on-click="add") Add
+      table
+        tbody
+          tr(rv-each-name="data.names")
+            td
+              b { name.first }
+            td
+              b { name.id }
+            td
+              a(rv-on-click="remove" rv-item-id="name.id") remove
+

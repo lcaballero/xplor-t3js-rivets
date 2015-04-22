@@ -1,0 +1,25 @@
+
+worker_processes 1;
+error_log <%= error_log %>;
+
+
+events {
+worker_connections 2048;
+}
+
+
+http {
+  include mime.types;
+
+  server {
+    set $app_root <%= app_root %>;
+    listen 8080 default_server;
+
+    location / {
+      root $app_root/;
+    }
+    location /images/ {
+      root $app_root/images;
+    }
+  }
+}
