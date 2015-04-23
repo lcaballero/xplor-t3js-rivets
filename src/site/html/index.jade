@@ -2,22 +2,42 @@ extends ../layouts/default.jade
 
 
 block main
-  div.module(data-module="first-module")
-    header
-      | First Module
-    .content
-      div.text Should have { data.text }
-        b(rv-text="data.text")
-      input(type='text' rv-value="data.text")
-      div
-        button(rv-on-click="add") Add
-      table
-        tbody
-          tr(rv-each-name="data.names")
-            td
-              b { name.first }
-            td
-              b { name.id }
-            td
-              a(rv-on-click="remove" rv-item-id="name.id") remove
 
+  slide-panel(rv-class-show='open', class='left-to-right contain', data-module='left-panel')
+    div(rv-color="color")
+      | Stuff with some text
+    aside.rotate(rv-on-click="toggle")
+      | Open
+      i(rv-map-value="icon-plus")
+
+
+  .content
+
+    button(id='new-module') New Module
+
+    tab-set(data-module="tab-set", active="id-2")
+      tab
+        b { tab.id }
+        span { tab.name }
+      tab-content
+        div { tab.content }
+
+
+    div.module(data-module="first-module")
+      header
+        | First Module
+      .content
+        div.text Should have { data.text }
+          b(rv-text="data.text")
+        input(type='text' rv-value="data.text")
+        div
+          button(rv-on-click="add") Add
+        table
+          tbody
+            tr(rv-each-name="data.names")
+              td
+                b { name.first }
+              td
+                b { name.id }
+              td
+                a(rv-on-click="remove" rv-item-id="name.id") remove

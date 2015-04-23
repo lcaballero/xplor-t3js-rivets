@@ -19,11 +19,14 @@ fromBower = (p) -> { cwd: path.join('./bower_components/', p), cwdbase: true }
 gulp.task 'build', ['build:jade', 'build:assets', 'build:nginx'], ->
 
 gulp.task 'build:assets', ['build:jade'], ->
+  exts = ("*.#{e}" for e in 'eot svg ttf woff'.split(' '))
+  console.log(exts)
+
   merge(
     gulp.src('**/*.coffee'  , from('scripts')).pipe(plugins.coffee()).pipe(to('js'))
     gulp.src('**/*.styl'    , from('styles')).pipe(stylus()).pipe(to('css'))
     gulp.src('**/*.html'    , from('html')).pipe(to('html'))
-    gulp.src('**/*.css'     , from('.')).pipe(to('/css'))
+    gulp.src('**/*.css'     , from('styles')).pipe(to('/css'))
 
     gulp.src('jquery.js'        , fromBower('jquery/dist')).pipe(to('js/libs'))
     gulp.src('lodash.js'        , fromBower('lodash/dist')).pipe(to('js/libs'))
@@ -33,6 +36,8 @@ gulp.task 'build:assets', ['build:jade'], ->
     gulp.src('sightglass.js'    , fromBower('sightglass/dist')).pipe(to('js/libs'))
 
     gulp.src('**/*.js'      , from('scripts')).pipe(to('js'))
+
+    gulp.src(exts, from('../fonts')).pipe(to('css/fonts'))
   )
 
 
