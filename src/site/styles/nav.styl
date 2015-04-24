@@ -1,8 +1,37 @@
-ugh = #ccc
+
+.main > .container
+  margin-top 120px
+
 nav
-  border 1px solid ugh
-  border-radius 8px
+  navHeightSize       = 32px
+  navItemAsideWidth   = 15px
+  padding-right navItemAsideWidth * 2
+  position fixed
+
   li
-    padding 8px
     font-size 16px
-    border-bottom 1px solid ugh
+    line-height 16px
+    cursor pointer
+    position relative
+    margin-bottom 1px
+    color color7
+
+    &> div
+      border-right 15px solid color9
+      background-color color3
+
+  li > div
+    padding 8px
+
+  li:hover > aside
+    width 0
+    height 0
+    right 0 - navItemAsideWidth
+    top -0px
+    position absolute
+
+    p = (navHeightSize / 2)
+    border-top p solid transparent
+    border-bottom p solid transparent
+    border-left p solid color9
+

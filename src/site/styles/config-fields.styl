@@ -1,0 +1,29 @@
+
+frame()
+  padding 8px
+
+
+.group
+  background-color color6_lower80
+  border-left 4px solid white
+
+  > div
+    padding-bottom 16px
+    border-bottom 2px solid color9
+
+  header
+    font-weight bold
+    font-size larger
+    display inline-block
+    frame()
+    margin 8px 0
+
+  td:first-child
+    width 200px
+
+  &+.group
+    margin-top 20px
+
+.fields
+  td
+    frame()

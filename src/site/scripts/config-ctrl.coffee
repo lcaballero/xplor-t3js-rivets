@@ -1,58 +1,38 @@
-Box.Application.addService('config-service', ->
-  new class ConfigService
-    getFields: =>
-      [
-        { container: "LinkConfigMessage", name: "minutesToRest", display: "Minutes to Rest", type: Number }
-        { container: "LinkConfigMessage", name: "searchThreadPoolSize", display: "Search Thread Pool Size", type: Number }
+Box.Application.addService('config-ctrl.group.template', ->
+  class GroupTemplate
+    constructor: (context, selector) ->
+      @group = $(context.getElement()).find(selector)
+      @parent = @group.parent()
+      @group = @group.detach().clone()
 
-        { container: "ColumboClientConfigMessage", name: "searchThreadPoolSize", display: "Search Thread Pool Size", type: Number }
-        { container: "ColumboClientConfigMessage", name: "searchThreadPoolSize", display: "Search Thread Pool Size", type: Number }
-
-        { container: "ColumboConfigMessage", name: "searchThreadPoolSize", display: "Search Thread Pool Size", type: Number }
-        { container: "ColumboConfigMessage", name: "searchThreadPoolSize", display: "Search Thread Pool Size", type: Number }
-
-        { container: "ConfigServerConfigMessage", name: "searchThreadPoolSize", display: "Search Thread Pool Size", type: Number }
-        { container: "ConfigServerConfigMessage", name: "searchThreadPoolSize", display: "Search Thread Pool Size", type: Number }
-      ]
-    getFieldGroups: =>
-      fields = @getFields()
-      groups = {}
-      for f in fields
-        if !groups[f.container]?
-          groups[f.container] = []
-        groups[f.container].push(f)
-      groups
-
-      for group,fields of groups
-        { name: group, fields: fields }
-
-    getContainers: =>
-      _(@getFields())
-        .pluck('container')
-        .uniq()
-        .value()
+    append: (data) ->
+      template = @group.clone()
+      @parent.append(template)
+      rivets.bind(template, data)
 )
-
-Box.Application.addService('validate-service', ->
-  new class ValidateService
-    getValidation: (container, field, value) =>
-)
-
-Box.Application.addService('', ->)
 
 Box.Application.addModule('config-ctrl', (context) ->
+  GroupTemplate = context.getService('config-ctrl.group.template')
+  Groups  = new GroupTemplate(context, "div.group")
+
   new class Module
     constructor: ->
     init: ->
-      svc = context.getService('config-service')
-
-
-      @groups = _.keys(svc.getFieldGroups())
-      @fields = svc.getFields()
+      elem        = context.getElement()
+      svc         = context.getService('config-service')
       @containers = svc.getContainers()
-      rivets.bind(context.getElement(), this)
+      @groups     = svc.getFieldGroups()
+
+      rivets.bind(elem, this)
+
+      for group in @groups
+        group.keypress = @keypress
+        Groups.append(group)
+
     keypress: (ev, {field}) =>
-      console.log('keypress', field.container, field.name, ev.currentTarget.value)
+      console.log(
+        'keypress', field.container,
+        field.name, ev.currentTarget.value)
 )
 
 

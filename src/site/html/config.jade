@@ -5,23 +5,27 @@ block main
   .main(data-module="config-ctrl")
     header
       .container
-        | Some tabs
+        h1
+          | Data Indexer Configuration
 
     .container
       .flex-container
-        .flex-columns-3
+        .flex-columns-4
           nav.frame
             ul
               li(rv-each-name="containers")
+                div { name }
+                aside
+
+        .flex-columns-8
+          div.group
+            div
+              header
                 | { name }
-        .flex-columns-9
-          div.group(rv-each-group="groups")
-            header
-              | { group.name }
-            table.fields
-              tbody
-                tr(rv-each-field="fields")
-                  td
-                    label { field.display }
-                  td
-                    input(rv-value='field.value', type='text', rv-on-keypress="keypress")
+              table.fields
+                tbody
+                  tr(rv-each-field="fields")
+                    td
+                      label { field.fieldDisplay }
+                    td
+                      input(rv-value='field.value', type='text', rv-on-keypress="keypress")
